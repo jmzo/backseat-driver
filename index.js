@@ -1,11 +1,10 @@
-/*
-Inspired by React's Prop Validation
-*/
+const messages = require('./messages')
+
 function checkArguments () {
   let caller = arguments.caller || checkArguments.caller
   let callerArgNames = getParamNames(caller)
   let callerArgs = caller.arguments
-  let msgs = []
+  let warnings = []
   let validators = arguments[0]
   for (let i = 0; i < callerArgNames.length; i++) {
     let valid = false
@@ -13,11 +12,18 @@ function checkArguments () {
     for (let j = 0; j < validTypes.length; j++) {
       if (typeof callerArgs[i + ''] === validTypes[j]) valid = true
     }
-    if (!valid) msgs.push(`Argument '${callerArgNames[i]}' of function '${caller.name}' must be of type(s) '${validTypes.join(',')}'.`)
+    if (!valid) warnings.push(messages.warning(callerArgNames[i], caller.name, validTypes.join(',')))
   }
-  msgs.forEach((msg) => console.warn(msg))
+  console.log('TEST TEST', warnings)
+
+  return {
+    warnings,
+    log: () => warnings.forEach((warning) => console.warn(warning))
+  }
 }
 
+// GIven a function as an argument, this will return an array of the paramaeter variable names in the
+// order they are defined and used.
 // https://stackoverflow.com/questions/1007981/how-to-get-function-parameter-names-values-dynamically
 let STRIP_COMMENTS = /(\/\/.*$)|(\/\*[\s\S]*?\*\/)|(\s*=[^,\)]*(('(?:\\'|[^'\r\n])*')|("(?:\\"|[^"\r\n])*"))|(\s*=[^,\)]*))/mg
 let ARGUMENT_NAMES = /([^\s,]+)/g
