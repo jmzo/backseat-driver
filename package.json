@@ -1,6 +1,6 @@
 {
   "name": "backseat-driver",
-  "description": "Broker Tools Platform Service",
+  "description": "Provides runtime analysis, warnings for your JavaScript apps.",
   "version": "1.0.0",
   "author": "James Caratozzolo",
   "main": "index.js",
